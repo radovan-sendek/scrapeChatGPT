@@ -34,3 +34,24 @@ def start_scrape(user_data, update_label):
 if __name__ == '__main__':
     main()
 
+# To bypass the app UI, uncomment from line 40 below and enter credentials here
+# If you are using this bypass, comment out line 31
+
+# if __name__ == '__main__':
+#     _user_data = UserData(platform.system())
+#
+#     _user_data.email = "your_email_here"
+#     _user_data.password = "your_password_here"
+#     # How you log in, using Google, chatGPT, Microsoft or Apple account?
+#     # Uncomment corresponding line:
+#     # _user_data.login_type = "google"
+#     # _user_data.login_type = "chat_gpt"
+#     # _user_data.login_type = "microsoft"
+#     # _user_data.login_type = "apple"
+#
+#     # Find the chrome browser version. You can check for version under Settings > Help > About Google Chrome
+#     # Example:
+#     #_user_data.chrome_version = '117'
+#     _user_data.chrome_version = 'chrome_version_number'
+#
+#     start_scrape(_user_data, None)

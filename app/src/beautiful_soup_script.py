@@ -7,13 +7,21 @@ def scrape(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
 
     # Find active tab caption
-    active_tab = soup.find('a', class_='dark:bg-gray-800')
-    active_tab_caption = active_tab.find('div', class_='flex-1').get_text(strip=True)
+    active_tab = soup.find('a', class_='flex items-center gap-2 rounded-lg p-2 bg-token-surface-primary')
+    active_tab_caption = active_tab.find('div', class_='relative grow overflow-hidden whitespace-nowrap').get_text(strip=True)
+
+    # Find the divs that hold the question and change their class from class="" to class="question"
+    user_question_outer_divs = soup.find_all('div', {'data-message-author-role': 'user'})
+    for user_div in user_question_outer_divs:
+        question_div = user_div.find('div', class_='')
+        if question_div:
+            question_div['class'] = "question"
+
     # Find all divs with questions and answers
     divs = soup.find_all(has_exact_class)
     # Add '####' and a new line to create a heading (obsidian format)
     for div in divs:
-        if div.get('class') == ['empty:hidden']:
+        if div.get('class') == ['']:
             div.string = '\n#### ' + div.get_text() + '\n'
     # Get all child elements from divs into a one string
     div_nested_elements = []
@@ -44,11 +52,17 @@ def scrape(html_content):
     create_obsidian_file(finished_content, active_tab_caption)
 
 
-# Class 'empty:hidden' is for the question, the other one is for the answer
-def has_exact_class(tag_name):
-    return tag_name.has_attr('class') \
-        and (tag_name['class'] == ['empty:hidden']
-             or tag_name['class'] == ['markdown', 'prose', 'w-full', 'break-words', 'dark:prose-invert', 'light'])
+# Class 'question' is for the question (was "", but in code above we change it to "question",
+# the other one is for the answer
+def has_exact_class(tag):
+    return (
+        tag.name == 'div'
+        and tag.has_attr('class')
+        and (
+            'question' in tag['class']
+            or {'markdown', 'prose', 'w-full', 'break-words', 'dark:prose-invert', 'dark'}.issubset(tag['class'])
+        )
+    )
 
 
 def sanitize_filename(filename):

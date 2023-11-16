@@ -38,8 +38,8 @@ def run_selenium_script(driver, user_data):
     login_button.click()
     # Log in
     login_user(driver, user_data)
-    # Handle popup
-    handle_popup(driver)
+    # Handle popup (currently the pop-up is not showing when logging in chatGPT)
+    # handle_popup(driver)
     # Scroll sidebar down and back to load all chats
     scroll_entire_sidebar(driver)
     # Scrape html from all chats, one by one
@@ -111,7 +111,8 @@ def scroll_entire_sidebar(driver):
 
 def scrape_all_chats(driver):
     # Locate all tab buttons
-    all_chats = driver.find_elements(By.CSS_SELECTOR, 'a.flex.p-3.items-center.group')
+    all_chats = driver.find_elements(By.CSS_SELECTOR, '.flex.items-center.gap-2.rounded-lg.p-2')
+
     # Go over all tabs and scrape the page html
     for chat in all_chats:
         # Click on a chat to load it

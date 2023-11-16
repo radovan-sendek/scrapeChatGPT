@@ -2,7 +2,7 @@ import threading
 from tkinter import StringVar, W, ttk, font
 from .base_view import BaseView
 
-VERSIONS = ["115", "116", "117"]
+VERSIONS = ["117", "118", "119"]
 
 
 class BrowserVersionPickView(BaseView):
